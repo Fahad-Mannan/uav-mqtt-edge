@@ -1,0 +1,160 @@
+{
+ "run": "B_q1_o60",
+ "qos": 1,
+ "outage_s": 60.01,
+ "outage_start_after_segment_s": 30.03,
+ "broker_limits": {
+  "max_queued_messages": "default",
+  "max_inflight_messages": "default"
+ },
+ "ping_during_ok": false,
+ "ping_after_ok": true,
+ "qdisc_clean_after": true,
+ "sent": 4320,
+ "rcvd_unique": 4320,
+ "lost": 0,
+ "duplicate_rows": 1,
+ "dup_flag_rows": 0,
+ "phases": {
+  "before": {
+   "sent": 704,
+   "rcvd": 704,
+   "lost": 0,
+   "rc4": 0,
+   "lost_rc0": 0,
+   "conn0": 0,
+   "lat_p50": 4.3674625,
+   "lat_max": 8.337772
+  },
+  "during": {
+   "sent": 1440,
+   "rcvd": 1440,
+   "lost": 0,
+   "rc4": 677,
+   "lost_rc0": 0,
+   "conn0": 701,
+   "lat_p50": 30335.0396295,
+   "lat_max": 60235.754137
+  },
+  "after": {
+   "sent": 2176,
+   "rcvd": 2176,
+   "lost": 0,
+   "rc4": 7,
+   "lost_rc0": 0,
+   "conn0": 7,
+   "lat_p50": 4.401911999999999,
+   "lat_max": 363.263027
+  }
+ },
+ "publisher_events_rel_cut_s": [
+  [
+   "SOCKET_OPEN",
+   "nodelay=1",
+   -29.27
+  ],
+  [
+   "CONNECT",
+   "rc=Success",
+   -29.27
+  ],
+  [
+   "DISCONNECT",
+   "rc=Keep alive timeout",
+   30.78
+  ],
+  [
+   "DISCONNECT",
+   "rc=Keep alive timeout",
+   30.78
+  ],
+  [
+   "SOCKET_OPEN",
+   "nodelay=1",
+   60.27
+  ],
+  [
+   "CONNECT",
+   "rc=Success",
+   60.27
+  ],
+  [
+   "DRAIN",
+   "acked=4320 of 4320 in 0.05 s",
+   150.74
+  ],
+  [
+   "FINISH",
+   "",
+   150.74
+  ],
+  [
+   "DISCONNECT",
+   "rc=Normal disconnection",
+   150.74
+  ]
+ ],
+ "disconnect_after_cut_s": 30.78,
+ "reconnect_after_restore_s": 0.26,
+ "first_rx_after_restore_s": 0.26,
+ "backlog_flushed_after_restore_s": 0.39,
+ "during_rcvd_max_latency_s": 60.24,
+ "imu_peak_aoi_max_s": 60.286,
+ "imu_peak_aoi_at_rel_cut_s": 60.27,
+ "drain": "acked=4320 of 4320 in 0.05 s",
+ "segment_note": null,
+ "segment_rc": 0,
+ "broker_dropped_lines": [],
+ "broker_client_lines": [
+  "1795595599 New client connected from 192.168.1.3:36805 as auto-3925FFA4-FF1B-71C7-04BC-79952A10A694 (p2, c1, k30, u'uavpi').",
+  "1795595676 Client auto-3925FFA4-FF1B-71C7-04BC-79952A10A694 has exceeded timeout, disconnecting.",
+  "1795595689 New client connected from 192.168.1.3:59173 as auto-8D9149A8-1A41-0936-96B4-E3D3652E8118 (p2, c1, k30, u'uavpi').",
+  "1795595779 Client auto-8D9149A8-1A41-0936-96B4-E3D3652E8118 disconnected.",
+  "1795595823 Client auto-68BD5D96-8FF8-7009-C21F-E4A2891DC8F8 disconnected."
+ ],
+ "throttled": {
+  "0x0": "175"
+ },
+ "chrony_after_restore": [
+  [
+   5.8382062911987305,
+   3,
+   "-16us["
+  ],
+  [
+   15.868502140045166,
+   1,
+   "+90us["
+  ],
+  [
+   25.8967547416687,
+   3,
+   "-1262us[-1337us]"
+  ],
+  [
+   35.92417812347412,
+   1,
+   "-1206us[-1253us]"
+  ],
+  [
+   45.942482471466064,
+   3,
+   "+103us["
+  ],
+  [
+   55.972686767578125,
+   1,
+   "+221us["
+  ],
+  [
+   66.00073885917664,
+   3,
+   "-1349us[-1371us]"
+  ],
+  [
+   76.03487586975098,
+   1,
+   "+42us["
+  ]
+ ]
+}

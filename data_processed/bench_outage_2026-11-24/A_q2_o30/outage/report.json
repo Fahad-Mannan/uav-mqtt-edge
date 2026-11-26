@@ -1,0 +1,154 @@
+{
+ "run": "A_q2_o30",
+ "qos": 2,
+ "outage_s": 30.01,
+ "outage_start_after_segment_s": 30.03,
+ "broker_limits": {
+  "max_queued_messages": "0",
+  "max_inflight_messages": "0"
+ },
+ "ping_during_ok": false,
+ "ping_after_ok": true,
+ "qdisc_clean_after": true,
+ "sent": 3600,
+ "rcvd_unique": 3600,
+ "lost": 0,
+ "duplicate_rows": 0,
+ "dup_flag_rows": 0,
+ "phases": {
+  "before": {
+   "sent": 703,
+   "rcvd": 703,
+   "lost": 0,
+   "rc4": 0,
+   "lost_rc0": 0,
+   "conn0": 0,
+   "lat_p50": 5.428371,
+   "lat_max": 11.990471
+  },
+  "during": {
+   "sent": 721,
+   "rcvd": 721,
+   "lost": 0,
+   "rc4": 0,
+   "lost_rc0": 0,
+   "conn0": 0,
+   "lat_p50": 16976.820328,
+   "lat_max": 31923.221532
+  },
+  "after": {
+   "sent": 2176,
+   "rcvd": 2176,
+   "lost": 0,
+   "rc4": 0,
+   "lost_rc0": 0,
+   "conn0": 25,
+   "lat_p50": 5.5768845,
+   "lat_max": 1948.746792
+  }
+ },
+ "publisher_events_rel_cut_s": [
+  [
+   "SOCKET_OPEN",
+   "nodelay=1",
+   -29.26
+  ],
+  [
+   "CONNECT",
+   "rc=Success",
+   -29.25
+  ],
+  [
+   "DISCONNECT",
+   "rc=Keep alive timeout",
+   30.79
+  ],
+  [
+   "DISCONNECT",
+   "rc=Keep alive timeout",
+   30.79
+  ],
+  [
+   "SOCKET_OPEN",
+   "nodelay=1",
+   31.8
+  ],
+  [
+   "CONNECT",
+   "rc=Success",
+   31.8
+  ],
+  [
+   "DRAIN",
+   "acked=3600 of 3600 in 0.05 s",
+   120.75
+  ],
+  [
+   "FINISH",
+   "",
+   120.75
+  ],
+  [
+   "DISCONNECT",
+   "rc=Normal disconnection",
+   120.75
+  ]
+ ],
+ "disconnect_after_cut_s": 30.79,
+ "reconnect_after_restore_s": 1.79,
+ "first_rx_after_restore_s": 1.91,
+ "backlog_flushed_after_restore_s": 1.99,
+ "during_rcvd_max_latency_s": 31.92,
+ "imu_peak_aoi_max_s": 31.973,
+ "imu_peak_aoi_at_rel_cut_s": 31.92,
+ "drain": "acked=3600 of 3600 in 0.05 s",
+ "segment_note": null,
+ "segment_rc": 0,
+ "broker_dropped_lines": [],
+ "broker_client_lines": [],
+ "throttled": {
+  "0x0": "146"
+ },
+ "chrony_after_restore": [
+  [
+   5.6253063678741455,
+   37,
+   "-194us["
+  ],
+  [
+   15.647403478622437,
+   2,
+   "-103us["
+  ],
+  [
+   25.679759740829468,
+   8,
+   "-257us["
+  ],
+  [
+   35.71526908874512,
+   2,
+   "-130us["
+  ],
+  [
+   45.751813650131226,
+   4,
+   "-75us["
+  ],
+  [
+   55.77973437309265,
+   14,
+   "-75us["
+  ],
+  [
+   65.81422781944275,
+   24,
+   "-75us["
+  ],
+  [
+   75.84831762313843,
+   2,
+   "-167us["
+  ]
+ ]
+}

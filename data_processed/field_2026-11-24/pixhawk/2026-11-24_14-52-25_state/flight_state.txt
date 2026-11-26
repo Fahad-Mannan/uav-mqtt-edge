@@ -1,0 +1,30 @@
+# 2026-11-24 14-52-25.bin
+GPS -> UTC fit: 1732 fixes, slope +2.9 ppm, |residual| p50 19.0 ms. Times MST. Hovers: speed < 1 m/s for >= 20 s, alt > 5 m, dist > 5 m; window = distance within +-2 m. Lean toward = wind from (hypothesis).
+
+Flight 1: armed 14:52:25.1 - disarmed 14:57:56.4; takeoff 14:52:32.6, land/disarm 14:57:45.9 (313 s); max 182.1 m, 15.8 m; at disarm 2.2 m from home, bearing 144 deg, altitude 0.7 m
+  battery: 16.48 V at arm, min 14.32 V at 14:57:40.6 (26.4 A), 15.01 V at disarm, 15.04 V 10 s later; 1806 mAh of 3300, 26.9 Wh; mean 20.8 A airborne, max 27.5 A
+  throttle: ThO mean airborne 0.441; ThH (hover throttle estimate) 0.479 at arm, 0.451 at disarm; MOT_THST_HOVER in the log 0.479 (first) / 0.451 (last)
+  VIBE airborne X/Y/Z mean 13.0/23.8/24.1, p95 22.0/42.0/46.1, max 29.2/57.0/60.1 m/s/s; clips +0
+  EKF wind states all zero (not estimated); fence radius 250 m, alt max 40 m
+  hover 181.7 m: 14:55:17.7 - 14:56:52.1 (94 s within +-2 m; still 14:55:18.6 - 14:56:51.2); dist 179.8-182.1, alt 15.2 (14.9-15.8); lean 4.8 deg (p95 8.0), thrust tilt 4.3 deg toward 33 deg; ThO 0.455; 21.3 A at 14.63 V; VIBE mean 14.0/29.2/32.6, clips +0
+
+Events:
+  14:52:25.1  MODE Loiter
+  14:52:25.2  MODE Loiter
+  14:52:27.1  EV   MOTORS_INTERLOCK_ENABLED
+  14:52:29.8  EV   AUTO_ARMED
+  14:52:32.6  EV   NOT_LANDED
+  14:52:36.6  MSG  EKF3 IMU1 MAG0 in-flight yaw alignment complete
+  14:52:36.7  MSG  EKF3 IMU0 MAG0 in-flight yaw alignment complete
+  14:52:36.7  EV   EKF_YAW_RESET
+  14:56:48.0  MODE RTL
+  14:57:23.7  MODE Loiter
+  14:57:45.1  EV   LAND_COMPLETE_MAYBE
+  14:57:45.9  EV   LAND_COMPLETE
+  14:57:56.4  ARM  disarmed (method 17)
+  14:57:56.4  EV   DISARMED
+  14:57:56.4  EV   MOTORS_INTERLOCK_DISABLED
+  15:04:08.9  ERR  subsys 5 code 1
+  15:04:08.9  MSG  Radio Failsafe - Disarming
+  15:04:10.6  MSG  PreArm: Throttle below failsafe
+  15:04:10.6  MSG  PreArm: Radio failsafe on

@@ -1,0 +1,30 @@
+# 2026-11-24 15-26-43.bin
+GPS -> UTC fit: 1674 fixes, slope +7.2 ppm, |residual| p50 1.9 ms. Times MST. Hovers: speed < 1 m/s for >= 20 s, alt > 5 m, dist > 5 m; window = distance within +-2 m. Lean toward = wind from (hypothesis).
+
+Flight 1: armed 15:26:43.2 - disarmed 15:32:03.0; takeoff 15:26:48.2, land/disarm 15:32:02.5 (314 s); max 174.5 m, 16.6 m; at disarm 0.1 m from home, bearing 277 deg, altitude 0.3 m
+  battery: 16.58 V at arm, min 14.39 V at 15:31:55.1 (25.6 A), 14.89 V at disarm, 15.04 V 10 s later; 1824 mAh of 3300, 27.2 Wh; mean 21.0 A airborne, max 28.7 A
+  throttle: ThO mean airborne 0.443; ThH (hover throttle estimate) 0.451 at arm, 0.453 at disarm; MOT_THST_HOVER in the log 0.451 (first) / 0.453 (last)
+  VIBE airborne X/Y/Z mean 14.1/25.9/26.0, p95 22.9/43.7/43.7, max 37.9/60.3/60.6 m/s/s; clips +0
+  EKF wind states all zero (not estimated); fence radius 250 m, alt max 40 m
+  hover 169.2 m: 15:29:21.2 - 15:29:54.9 (34 s within +-2 m; still 15:29:22.2 - 15:29:53.8); dist 167.2-171.1, alt 15.7 (15.4-15.8); lean 3.9 deg (p95 6.6), thrust tilt 3.3 deg toward 12 deg; ThO 0.447; 20.9 A at 14.80 V; VIBE mean 13.6/25.8/27.0, clips +0
+  hover 174.3 m: 15:29:55.9 - 15:31:08.5 (73 s within +-2 m; still 15:29:55.8 - 15:31:07.6); dist 172.3-174.5, alt 15.6 (15.3-16.2); lean 5.1 deg (p95 7.8), thrust tilt 4.8 deg toward 30 deg; ThO 0.458; 21.6 A at 14.64 V; VIBE mean 16.0/29.9/33.1, clips +0
+
+Events:
+  15:26:43.2  MODE Loiter
+  15:26:43.3  MODE Loiter
+  15:26:45.2  EV   MOTORS_INTERLOCK_ENABLED
+  15:26:46.4  EV   AUTO_ARMED
+  15:26:48.2  EV   NOT_LANDED
+  15:26:55.9  MSG  EKF3 IMU1 MAG0 in-flight yaw alignment complete
+  15:26:56.0  MSG  EKF3 IMU0 MAG0 in-flight yaw alignment complete
+  15:26:56.0  EV   EKF_YAW_RESET
+  15:31:04.4  MODE RTL
+  15:32:01.7  EV   LAND_COMPLETE_MAYBE
+  15:32:02.5  EV   LAND_COMPLETE
+  15:32:03.0  ARM  disarmed (method 13)
+  15:32:03.0  EV   DISARMED
+  15:32:03.0  EV   MOTORS_INTERLOCK_DISABLED
+  15:39:40.4  ERR  subsys 5 code 1
+  15:39:40.4  MSG  Radio Failsafe - Disarming
+  15:39:41.4  MSG  PreArm: Throttle below failsafe
+  15:39:41.4  MSG  PreArm: Radio failsafe on

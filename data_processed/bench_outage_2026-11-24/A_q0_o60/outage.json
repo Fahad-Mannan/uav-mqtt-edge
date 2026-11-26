@@ -1,0 +1,36 @@
+{
+ "label": "A_q0_o60",
+ "qos": 0,
+ "pre_s": 30,
+ "outage_s": 60.0,
+ "post_s": 90,
+ "segment_s": 180.0,
+ "dev": "enp0s31f6",
+ "cut": [
+  "/usr/sbin/tc qdisc add dev enp0s31f6 root netem loss 100%",
+  "/usr/sbin/tc qdisc add dev enp0s31f6 handle ffff: ingress",
+  "/usr/sbin/tc filter add dev enp0s31f6 parent ffff: protocol all prio 1 matchall action drop"
+ ],
+ "broker_limits": {
+  "max_queued_messages": "0",
+  "max_inflight_messages": "0"
+ },
+ "events": {
+  "unit": "uav-outage-guard-A_q0_o60",
+  "guard_after_s": 90.0,
+  "t_guard_request": 1795594644.1960022,
+  "t_guard_created": 1795594644.2073548,
+  "t_cut_request": 1795594644.2073557,
+  "t_on": 1795594644.228589,
+  "qdisc_during": "qdisc netem 8007: root refcnt 2 limit 1000 loss 100%\nqdisc ingress ffff: parent ffff:fff1 ---------------- \n",
+  "ping_during_ok": false,
+  "t_uncut_request": 1795594704.2285914,
+  "t_off": 1795594704.242731,
+  "qdisc_after": "qdisc fq_codel 0: root refcnt 2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64 \n",
+  "clean_after": true,
+  "ping_after_ok": true
+ },
+ "segment_start_planned": 1795594614.1959958,
+ "t_on_planned": 1795594644.1959958,
+ "t_off_planned": 1795594704.1959958
+}

@@ -1,0 +1,154 @@
+{
+ "run": "A_q2_o60",
+ "qos": 2,
+ "outage_s": 60.01,
+ "outage_start_after_segment_s": 30.03,
+ "broker_limits": {
+  "max_queued_messages": "0",
+  "max_inflight_messages": "0"
+ },
+ "ping_during_ok": false,
+ "ping_after_ok": true,
+ "qdisc_clean_after": true,
+ "sent": 4320,
+ "rcvd_unique": 4320,
+ "lost": 0,
+ "duplicate_rows": 0,
+ "dup_flag_rows": 0,
+ "phases": {
+  "before": {
+   "sent": 703,
+   "rcvd": 703,
+   "lost": 0,
+   "rc4": 0,
+   "lost_rc0": 0,
+   "conn0": 0,
+   "lat_p50": 5.904371,
+   "lat_max": 12.357527
+  },
+  "during": {
+   "sent": 1440,
+   "rcvd": 1440,
+   "lost": 0,
+   "rc4": 676,
+   "lost_rc0": 0,
+   "conn0": 700,
+   "lat_p50": 33187.365001,
+   "lat_max": 63048.173937
+  },
+  "after": {
+   "sent": 2177,
+   "rcvd": 2177,
+   "lost": 0,
+   "rc4": 70,
+   "lost_rc0": 0,
+   "conn0": 70,
+   "lat_p50": 5.979621,
+   "lat_max": 3204.206125
+  }
+ },
+ "publisher_events_rel_cut_s": [
+  [
+   "SOCKET_OPEN",
+   "nodelay=1",
+   -29.24
+  ],
+  [
+   "CONNECT",
+   "rc=Success",
+   -29.24
+  ],
+  [
+   "DISCONNECT",
+   "rc=Keep alive timeout",
+   30.81
+  ],
+  [
+   "DISCONNECT",
+   "rc=Keep alive timeout",
+   30.81
+  ],
+  [
+   "SOCKET_OPEN",
+   "nodelay=1",
+   62.88
+  ],
+  [
+   "CONNECT",
+   "rc=Success",
+   62.88
+  ],
+  [
+   "DRAIN",
+   "acked=4320 of 4320 in 0.05 s",
+   150.77
+  ],
+  [
+   "FINISH",
+   "",
+   150.77
+  ],
+  [
+   "DISCONNECT",
+   "rc=Normal disconnection",
+   150.77
+  ]
+ ],
+ "disconnect_after_cut_s": 30.81,
+ "reconnect_after_restore_s": 2.87,
+ "first_rx_after_restore_s": 3.05,
+ "backlog_flushed_after_restore_s": 3.21,
+ "during_rcvd_max_latency_s": 63.05,
+ "imu_peak_aoi_max_s": 63.098,
+ "imu_peak_aoi_at_rel_cut_s": 63.07,
+ "drain": "acked=4320 of 4320 in 0.05 s",
+ "segment_note": null,
+ "segment_rc": 0,
+ "broker_dropped_lines": [],
+ "broker_client_lines": [],
+ "throttled": {
+  "0x0": "176"
+ },
+ "chrony_after_restore": [
+  [
+   5.738241910934448,
+   69,
+   "+92us["
+  ],
+  [
+   15.759607553482056,
+   2,
+   "-239us["
+  ],
+  [
+   25.78639316558838,
+   4,
+   "-402us["
+  ],
+  [
+   35.80719065666199,
+   6,
+   "-247us["
+  ],
+  [
+   45.83758759498596,
+   8,
+   "-132us["
+  ],
+  [
+   55.869494676589966,
+   10,
+   "-274us["
+  ],
+  [
+   65.89962911605835,
+   7,
+   "-218us["
+  ],
+  [
+   75.93141555786133,
+   1,
+   "-53us["
+  ]
+ ]
+}

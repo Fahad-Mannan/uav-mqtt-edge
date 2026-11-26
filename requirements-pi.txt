@@ -1,0 +1,6 @@
+# Raspberry Pi publisher (code/pi/), Python 3.13. Versions used in the paper where known.
+paho-mqtt==2.1.0
+adafruit-blinka
+adafruit-circuitpython-bmp280
+adafruit-circuitpython-mpu6050
+adafruit-circuitpython-ina219

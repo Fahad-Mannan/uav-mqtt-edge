@@ -1,0 +1,154 @@
+{
+ "run": "A_q0_o30",
+ "qos": 0,
+ "outage_s": 30.01,
+ "outage_start_after_segment_s": 30.03,
+ "broker_limits": {
+  "max_queued_messages": "0",
+  "max_inflight_messages": "0"
+ },
+ "ping_during_ok": false,
+ "ping_after_ok": true,
+ "qdisc_clean_after": true,
+ "sent": 3600,
+ "rcvd_unique": 2892,
+ "lost": 708,
+ "duplicate_rows": 0,
+ "dup_flag_rows": 0,
+ "phases": {
+  "before": {
+   "sent": 702,
+   "rcvd": 702,
+   "lost": 0,
+   "rc4": 0,
+   "lost_rc0": 0,
+   "conn0": 0,
+   "lat_p50": 5.3804225,
+   "lat_max": 40571.63733
+  },
+  "during": {
+   "sent": 720,
+   "rcvd": 57,
+   "lost": 663,
+   "rc4": 0,
+   "lost_rc0": 663,
+   "conn0": 0,
+   "lat_p50": 39330.706359,
+   "lat_max": 40521.811897
+  },
+  "after": {
+   "sent": 2178,
+   "rcvd": 2133,
+   "lost": 45,
+   "rc4": 25,
+   "lost_rc0": 20,
+   "conn0": 25,
+   "lat_p50": 5.296138,
+   "lat_max": 8.330601
+  }
+ },
+ "publisher_events_rel_cut_s": [
+  [
+   "SOCKET_OPEN",
+   "nodelay=1",
+   -29.16
+  ],
+  [
+   "CONNECT",
+   "rc=Success",
+   -29.16
+  ],
+  [
+   "DISCONNECT",
+   "rc=Keep alive timeout",
+   30.85
+  ],
+  [
+   "DISCONNECT",
+   "rc=Keep alive timeout",
+   30.85
+  ],
+  [
+   "SOCKET_OPEN",
+   "nodelay=1",
+   31.86
+  ],
+  [
+   "CONNECT",
+   "rc=Success",
+   31.88
+  ],
+  [
+   "FINISH",
+   "",
+   121.8
+  ],
+  [
+   "DISCONNECT",
+   "rc=Normal disconnection",
+   121.8
+  ]
+ ],
+ "disconnect_after_cut_s": 30.85,
+ "reconnect_after_restore_s": 1.86,
+ "first_rx_after_restore_s": 1.88,
+ "backlog_flushed_after_restore_s": 10.56,
+ "during_rcvd_max_latency_s": 40.52,
+ "imu_peak_aoi_max_s": 31.952,
+ "imu_peak_aoi_at_rel_cut_s": 31.9,
+ "drain": null,
+ "segment_note": null,
+ "segment_rc": 0,
+ "broker_dropped_lines": [],
+ "broker_client_lines": [
+  "1795591556 New client connected from 192.168.1.3:44055 as auto-4536E5AB-23C2-43A5-A60E-3D7895C56C0A (p2, c1, k30, u'uavpi').",
+  "1795591617 New client connected from 192.168.1.3:38347 as auto-013B1CBB-449C-46A8-5DC2-3E1D489B79DE (p2, c1, k30, u'uavpi').",
+  "1795591707 Client auto-013B1CBB-449C-46A8-5DC2-3E1D489B79DE disconnected.",
+  "1795591750 Client auto-5DCF85AB-3028-AD52-5915-B98932FCD999 disconnected."
+ ],
+ "throttled": {
+  "0x0": "147"
+ },
+ "chrony_after_restore": [
+  [
+   5.754432439804077,
+   38,
+   "-27us["
+  ],
+  [
+   15.786534547805786,
+   3,
+   "-20us["
+  ],
+  [
+   25.821020126342773,
+   1,
+   "-1078us[-1118us]"
+  ],
+  [
+   35.856136083602905,
+   3,
+   "+2740ns["
+  ],
+  [
+   45.88892841339111,
+   5,
+   "-424us["
+  ],
+  [
+   55.917235136032104,
+   3,
+   "-3983ns["
+  ],
+  [
+   65.94863939285278,
+   5,
+   "-76us["
+  ],
+  [
+   75.97784638404846,
+   7,
+   "+37us["
+  ]
+ ]
+}

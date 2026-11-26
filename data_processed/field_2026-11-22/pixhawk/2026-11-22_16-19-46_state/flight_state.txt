@@ -1,0 +1,71 @@
+# 2026-11-22 16-19-46.bin
+GPS -> UTC fit: 3071 fixes, slope +23.7 ppm, |residual| p50 10.8 ms. Times MST. Hovers: speed < 1 m/s for >= 20 s, alt > 5 m, dist > 5 m; window = distance within +-2 m. Lean toward = wind from (hypothesis).
+
+Flight 1: armed 16:28:11.4 - disarmed 16:28:21.3; takeoff 16:28:11.4, land/disarm 16:28:21.3 (10 s); max 0.2 m, 0.1 m; at disarm 0.0 m from home, bearing 76 deg, altitude 0.1 m
+  battery: 16.43 V at arm, min 16.43 V at 16:28:11.7 (0.6 A), 16.43 V at disarm, 16.43 V 10 s later; 2 mAh of 3300, 0.0 Wh; mean nan A airborne, max 0.6 A
+  throttle: ThO mean airborne nan; ThH (hover throttle estimate) 0.435 at arm, 0.435 at disarm; MOT_THST_HOVER in the log 0.435 (first) / 0.483 (last)  [no takeoff in this arm cycle]
+  VIBE airborne X/Y/Z mean 0.0/0.0/0.0, p95 0.0/0.0/0.0, max 0.0/0.0/0.0 m/s/s; clips +0
+  EKF wind states all zero (not estimated); fence radius 250 m, alt max 40 m
+Flight 2: armed 16:28:34.9 - disarmed 16:29:01.3; takeoff 16:28:41.3, land/disarm 16:29:00.8 (20 s); max 0.4 m, 2.4 m; at disarm 0.2 m from home, bearing 40 deg, altitude 0.1 m
+  battery: 16.43 V at arm, min 15.00 V at 16:28:55.7 (21.5 A), 15.97 V at disarm, 16.18 V 10 s later; 106 mAh of 3300, 1.6 Wh; mean 20.0 A airborne, max 28.2 A
+  throttle: ThO mean airborne 0.436; ThH (hover throttle estimate) 0.435 at arm, 0.439 at disarm; MOT_THST_HOVER in the log 0.435 (first) / 0.483 (last)
+  VIBE airborne X/Y/Z mean 17.7/25.5/18.1, p95 22.3/32.0/22.9, max 25.3/36.7/25.0 m/s/s; clips +0
+  EKF wind states all zero (not estimated); fence radius 250 m, alt max 40 m
+Flight 3: armed 16:31:06.5 - disarmed 16:37:27.3; takeoff 16:31:15.4, land/disarm 16:37:26.8 (371 s); max 100.4 m, 16.5 m; at disarm 0.0 m from home, bearing 112 deg, altitude -0.5 m
+  battery: 16.30 V at arm, min 14.19 V at 16:36:41.8 (27.8 A), 14.71 V at disarm, 14.83 V 10 s later; 2217 mAh of 3300, 32.2 Wh; mean 21.6 A airborne, max 30.6 A
+  throttle: ThO mean airborne 0.482; ThH (hover throttle estimate) 0.439 at arm, 0.483 at disarm; MOT_THST_HOVER in the log 0.435 (first) / 0.483 (last)
+  VIBE airborne X/Y/Z mean 18.0/29.7/21.7, p95 22.1/41.3/32.3, max 31.0/64.4/50.0 m/s/s; clips +0
+  EKF wind states all zero (not estimated); fence radius 250 m, alt max 40 m
+  hover 27.9 m: 16:32:27.6 - 16:34:00.0 (92 s within +-2 m; still 16:32:28.5 - 16:33:58.5); dist 27.8-29.9, alt 15.9 (15.6-16.1); lean 1.4 deg (p95 2.3), thrust tilt 0.4 deg toward 189 deg; ThO 0.477; 21.5 A at 14.60 V; VIBE mean 18.1/26.9/19.2, clips +0
+  hover 100.2 m: 16:34:23.1 - 16:36:21.0 (118 s within +-2 m; still 16:34:24.3 - 16:36:19.9); dist 98.2-100.4, alt 15.9 (15.7-16.1); lean 2.0 deg (p95 3.4), thrust tilt 1.6 deg toward 211 deg; ThO 0.488; 21.6 A at 14.41 V; VIBE mean 17.7/29.1/21.7, clips +0
+
+Events:
+  16:19:46.3  MODE Loiter
+  16:19:58.9  MSG  Arm: Pitch (RC2) is not neutral
+  16:20:13.3  MSG  Arm: Pitch (RC2) is not neutral
+  16:26:58.9  MODE Loiter
+  16:27:00.9  EV   MOTORS_INTERLOCK_ENABLED
+  16:27:08.8  ARM  disarmed (method 17)
+  16:27:08.8  EV   DISARMED
+  16:27:08.8  EV   MOTORS_INTERLOCK_DISABLED
+  16:28:11.4  ARM  armed (method 2)
+  16:28:11.4  EV   ARMED
+  16:28:11.4  MODE Loiter
+  16:28:13.4  EV   MOTORS_INTERLOCK_ENABLED
+  16:28:21.3  ARM  disarmed (method 17)
+  16:28:21.3  EV   DISARMED
+  16:28:21.3  EV   MOTORS_INTERLOCK_DISABLED
+  16:28:34.9  ARM  armed (method 2)
+  16:28:34.9  EV   ARMED
+  16:28:34.9  MODE Loiter
+  16:28:36.9  EV   MOTORS_INTERLOCK_ENABLED
+  16:28:39.5  EV   AUTO_ARMED
+  16:28:41.3  EV   NOT_LANDED
+  16:28:44.1  MODE RTL
+  16:29:00.0  EV   LAND_COMPLETE_MAYBE
+  16:29:00.8  EV   LAND_COMPLETE
+  16:29:01.3  ARM  disarmed (method 13)
+  16:29:01.3  EV   DISARMED
+  16:29:01.3  EV   MOTORS_INTERLOCK_DISABLED
+  16:30:51.5  MODE Loiter
+  16:30:54.8  MSG  Arm: Throttle (RC3) is not neutral
+  16:31:06.5  ARM  armed (method 2)
+  16:31:06.5  EV   ARMED
+  16:31:06.5  MODE Loiter
+  16:31:08.5  EV   MOTORS_INTERLOCK_ENABLED
+  16:31:13.0  EV   AUTO_ARMED
+  16:31:15.4  EV   NOT_LANDED
+  16:31:19.3  MSG  EKF3 IMU1 MAG0 in-flight yaw alignment complete
+  16:31:19.4  MSG  EKF3 IMU0 MAG0 in-flight yaw alignment complete
+  16:31:19.4  EV   EKF_YAW_RESET
+  16:36:39.0  MODE RTL
+  16:37:25.9  EV   LAND_COMPLETE_MAYBE
+  16:37:26.8  EV   LAND_COMPLETE
+  16:37:27.3  ARM  disarmed (method 13)
+  16:37:27.3  EV   DISARMED
+  16:37:27.3  EV   MOTORS_INTERLOCK_DISABLED
+  16:39:23.7  MSG  PreArm: Battery 1 low capacity failsafe
+  16:39:54.7  MSG  PreArm: Battery 1 low capacity failsafe
+  16:40:25.7  MSG  PreArm: Battery 1 low capacity failsafe
+  16:40:56.7  MSG  PreArm: Battery 1 low capacity failsafe
+  16:41:27.7  MSG  PreArm: Battery 1 low capacity failsafe
