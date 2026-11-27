@@ -272,77 +272,82 @@ def md_table(df, cols, fmt):
     return "\n".join(out)
 
 
-for name in sys.argv[1:]:
-    base = os.path.abspath(name) if os.path.isdir(name) else f"{HOME}/{name}"
-    name = os.path.basename(base.rstrip("/"))
-    dirs = run_dirs(base)
-    if not dirs:
-        print(f"{name}: no run folders with meta.json, rx.csv and pi_log.csv")
-        continue
-    rows, lats = [], []
-    for d in dirs:
-        r, l = analyse_run(d, base)
-        rows.append(r)
-        lats.append(l)
-    R, LAT = pd.DataFrame(rows), pd.concat(lats, ignore_index=True)
-    P = pooled(R, LAT, ["qos"])
-    P.insert(0, "group", "qos")
-    if R.distance_m.notna().any():
-        PD = pooled(R, LAT, ["distance_m", "qos"])
-        PD.insert(0, "group", "distance_qos")
-        P = pd.concat([P, PD], ignore_index=True)
-    R["pcap"], R["ping_hz"] = R.pcap.fillna(0), R.ping_hz.fillna(0)
-    factors = [f for f in ("nodelay", "pcap", "ping_hz") if R[f].nunique(dropna=False) > 1]
-    if factors:                                  # interleaved A/B: pool per condition as well
-        PC = pooled(R, LAT, ["qos"] + factors)
-        PC.insert(0, "group", "condition")
-        P = pd.concat([P, PC], ignore_index=True)
-    R.to_csv(f"{base}/metrics_runs.csv", index=False)
-    P.to_csv(f"{base}/metrics_pooled.csv", index=False)
+def main():
+    for name in sys.argv[1:]:
+        base = os.path.abspath(name) if os.path.isdir(name) else f"{HOME}/{name}"
+        name = os.path.basename(base.rstrip("/"))
+        dirs = run_dirs(base)
+        if not dirs:
+            print(f"{name}: no run folders with meta.json, rx.csv and pi_log.csv")
+            continue
+        rows, lats = [], []
+        for d in dirs:
+            r, l = analyse_run(d, base)
+            rows.append(r)
+            lats.append(l)
+        R, LAT = pd.DataFrame(rows), pd.concat(lats, ignore_index=True)
+        P = pooled(R, LAT, ["qos"])
+        P.insert(0, "group", "qos")
+        if R.distance_m.notna().any():
+            PD = pooled(R, LAT, ["distance_m", "qos"])
+            PD.insert(0, "group", "distance_qos")
+            P = pd.concat([P, PD], ignore_index=True)
+        R["pcap"], R["ping_hz"] = R.pcap.fillna(0), R.ping_hz.fillna(0)
+        factors = [f for f in ("nodelay", "pcap", "ping_hz") if R[f].nunique(dropna=False) > 1]
+        if factors:                                  # interleaved A/B: pool per condition as well
+            PC = pooled(R, LAT, ["qos"] + factors)
+            PC.insert(0, "group", "condition")
+            P = pd.concat([P, PC], ignore_index=True)
+        R.to_csv(f"{base}/metrics_runs.csv", index=False)
+        P.to_csv(f"{base}/metrics_pooled.csv", index=False)
 
-    sensors = sorted({c.split("_")[0] for c in R.columns if c.endswith("_aoi_avg_ms")})
-    fmt = {"sent": "{:.0f}", "received": "{:.0f}", "runs": "{:.0f}", "qos": "{:.0f}", "scans": "{:.0f}",
-           "pdr_pct": "{:.3f}", "plr_pct": "{:.3f}", "lat_over20_pct": "{:.3f}", "noscan_lat_over20_pct": "{:.3f}", "msgs_in_scan": "{:.0f}", "distance_m": "{:.0f}", "nodelay": "{:.0f}", "pcap": "{:.0f}", "ping_hz": "{:g}",
-           "rssi_mean_dbm": "{:.1f}", "rssi_min_dbm": "{:.0f}", "duration_s": "{:.0f}"}
-    cols_noscan = ["group", "distance_m", "qos", "scans", "msgs_in_scan", "noscan_lat_mean_ms", "noscan_lat_jitter_ms",
-                   "noscan_lat_p50_ms", "noscan_lat_p95_ms", "noscan_lat_p99_ms", "noscan_lat_max_ms",
-                   "noscan_lat_over20_pct"]
-    cols_lat = ["group", "distance_m", "qos", "runs", "sent", "received", "pdr_pct", "plr_pct", "lat_mean_ms",
-                "lat_jitter_ms", "lat_p50_ms", "lat_p95_ms", "lat_p99_ms", "lat_max_ms", "lat_over20_pct"]
-    cols_rate = ["group", "distance_m", "qos", "msgs_per_s", "payload_kbps", "agg_rate_nominal_kbps",
-                 "agg_rate_measured_kbps"] + \
-                [f"{s}_{x}" for s in sensors for x in ("rate_hz", "bytes")] + ["rssi_mean_dbm", "rssi_min_dbm", "scans", "scan_time_pct"]
-    cols_aoi = ["group", "distance_m", "qos"] + [f"{s}_{x}" for s in sensors for x in ("aoi_avg_ms", "paoi_mean_ms", "paoi_max_ms")]
-    run_cols = ["run", "qos", "distance_m", "duration_s", "sent", "received", "pdr_pct", "lat_mean_ms", "lat_jitter_ms",
-                "lat_p50_ms", "lat_p95_ms", "lat_p99_ms", "lat_max_ms", "lat_over20_pct", "agg_rate_measured_kbps",
-                "mpu6050_aoi_avg_ms", "mpu6050_paoi_max_ms", "rssi_mean_dbm", "scans", "scan_time_pct",
-                "clk_after_offset_ms", "clk_log_max_lastrx_s"]
-    for c in (cols_lat, cols_noscan):
-        for f_ in [f for f in ("nodelay", "pcap", "ping_hz") if f in P.columns]:
-            c.insert(c.index("qos") + 1, f_)
-    if R.distance_m.isna().all():
-        for c in (cols_lat, cols_rate, cols_aoi, run_cols, cols_noscan):
-            c.remove("distance_m")
-    else:
-        run_cols.insert(1, "point")
-    md = [f"# Metrics: `{name}`", "",
-          f"{len(R)} runs. Latency = laptop receive - Pi publish (first arrival). Jitter = std of latency. "
-          f"PDR from unique (topic, seq) in pi_log.csv vs rx.csv. Aggregate rate (Eq. 8) R = sum f_k S_k x 8, "
-          f"S_k = mean payload bytes (payload only): nominal = publisher rates (as in the abstract's Table 2), "
-          f"measured = received update rates. AoI from t_sample_ns at the laptop; "
-          f"pooled AoI = duration-weighted mean of run averages, peak = max over runs.", "",
-          "## Clock check", "",
-          (("Runs flagged (chrony LastRx > 60 s (stalled) or |offset| > 1 ms after or during the run; the clock may "
-            "have stalled, so latency and AoI may be biased):\n\n" +
-            "\n".join(f"- `{r.run}`: {r.clock_flag}" for r in R.itertuples() if r.clock_flag))
-           if (R.clock_flag != "").any() else "No run flagged (chrony LastRx <= 60 s and |offset| <= 1 ms "
-           "after the run, and during it where side logging recorded chrony)."), "",
-          "## Delivery and latency (pooled, ms)", "", md_table(P, cols_lat, fmt), "",
-          f"## Latency without scan windows (ms; messages published within {SCAN_MARGIN_S:.0f} s of an `iw event` scan removed)", "",
-          md_table(P, cols_noscan, fmt), "",
-          "## Rates, payload, link", "", md_table(P, cols_rate, fmt), "",
-          "## Age of Information (ms)", "", md_table(P, cols_aoi, fmt), "",
-          "## Per run", "", md_table(R, run_cols, fmt), ""]
-    open(f"{base}/metrics.md", "w").write("\n".join(md))
-    print("\n".join(md))
-    print(f"\nwrote {base}/metrics_runs.csv, metrics_pooled.csv, metrics.md")
+        sensors = sorted({c.split("_")[0] for c in R.columns if c.endswith("_aoi_avg_ms")})
+        fmt = {"sent": "{:.0f}", "received": "{:.0f}", "runs": "{:.0f}", "qos": "{:.0f}", "scans": "{:.0f}",
+               "pdr_pct": "{:.3f}", "plr_pct": "{:.3f}", "lat_over20_pct": "{:.3f}", "noscan_lat_over20_pct": "{:.3f}", "msgs_in_scan": "{:.0f}", "distance_m": "{:.0f}", "nodelay": "{:.0f}", "pcap": "{:.0f}", "ping_hz": "{:g}",
+               "rssi_mean_dbm": "{:.1f}", "rssi_min_dbm": "{:.0f}", "duration_s": "{:.0f}"}
+        cols_noscan = ["group", "distance_m", "qos", "scans", "msgs_in_scan", "noscan_lat_mean_ms", "noscan_lat_jitter_ms",
+                       "noscan_lat_p50_ms", "noscan_lat_p95_ms", "noscan_lat_p99_ms", "noscan_lat_max_ms",
+                       "noscan_lat_over20_pct"]
+        cols_lat = ["group", "distance_m", "qos", "runs", "sent", "received", "pdr_pct", "plr_pct", "lat_mean_ms",
+                    "lat_jitter_ms", "lat_p50_ms", "lat_p95_ms", "lat_p99_ms", "lat_max_ms", "lat_over20_pct"]
+        cols_rate = ["group", "distance_m", "qos", "msgs_per_s", "payload_kbps", "agg_rate_nominal_kbps",
+                     "agg_rate_measured_kbps"] + \
+                    [f"{s}_{x}" for s in sensors for x in ("rate_hz", "bytes")] + ["rssi_mean_dbm", "rssi_min_dbm", "scans", "scan_time_pct"]
+        cols_aoi = ["group", "distance_m", "qos"] + [f"{s}_{x}" for s in sensors for x in ("aoi_avg_ms", "paoi_mean_ms", "paoi_max_ms")]
+        run_cols = ["run", "qos", "distance_m", "duration_s", "sent", "received", "pdr_pct", "lat_mean_ms", "lat_jitter_ms",
+                    "lat_p50_ms", "lat_p95_ms", "lat_p99_ms", "lat_max_ms", "lat_over20_pct", "agg_rate_measured_kbps",
+                    "mpu6050_aoi_avg_ms", "mpu6050_paoi_max_ms", "rssi_mean_dbm", "scans", "scan_time_pct",
+                    "clk_after_offset_ms", "clk_log_max_lastrx_s"]
+        for c in (cols_lat, cols_noscan):
+            for f_ in [f for f in ("nodelay", "pcap", "ping_hz") if f in P.columns]:
+                c.insert(c.index("qos") + 1, f_)
+        if R.distance_m.isna().all():
+            for c in (cols_lat, cols_rate, cols_aoi, run_cols, cols_noscan):
+                c.remove("distance_m")
+        else:
+            run_cols.insert(1, "point")
+        md = [f"# Metrics: `{name}`", "",
+              f"{len(R)} runs. Latency = laptop receive - Pi publish (first arrival). Jitter = std of latency. "
+              f"PDR from unique (topic, seq) in pi_log.csv vs rx.csv. Aggregate rate (Eq. 8) R = sum f_k S_k x 8, "
+              f"S_k = mean payload bytes (payload only): nominal = publisher rates (as in the abstract's Table 2), "
+              f"measured = received update rates. AoI from t_sample_ns at the laptop; "
+              f"pooled AoI = duration-weighted mean of run averages, peak = max over runs.", "",
+              "## Clock check", "",
+              (("Runs flagged (chrony LastRx > 60 s (stalled) or |offset| > 1 ms after or during the run; the clock may "
+                "have stalled, so latency and AoI may be biased):\n\n" +
+                "\n".join(f"- `{r.run}`: {r.clock_flag}" for r in R.itertuples() if r.clock_flag))
+               if (R.clock_flag != "").any() else "No run flagged (chrony LastRx <= 60 s and |offset| <= 1 ms "
+               "after the run, and during it where side logging recorded chrony)."), "",
+              "## Delivery and latency (pooled, ms)", "", md_table(P, cols_lat, fmt), "",
+              f"## Latency without scan windows (ms; messages published within {SCAN_MARGIN_S:.0f} s of an `iw event` scan removed)", "",
+              md_table(P, cols_noscan, fmt), "",
+              "## Rates, payload, link", "", md_table(P, cols_rate, fmt), "",
+              "## Age of Information (ms)", "", md_table(P, cols_aoi, fmt), "",
+              "## Per run", "", md_table(R, run_cols, fmt), ""]
+        open(f"{base}/metrics.md", "w").write("\n".join(md))
+        print("\n".join(md))
+        print(f"\nwrote {base}/metrics_runs.csv, metrics_pooled.csv, metrics.md")
+
+
+if __name__ == "__main__":
+    main()

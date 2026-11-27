@@ -193,6 +193,36 @@ Results are in `data_processed/ci/` (`summary.md` first):
   inconclusive or depend on the block length, and all cells with fewer than 100 messages or 10 blocks
   are flagged as too small.
 
+**Weak-link bench test (QoS 2 round trip)** (`code/run_weak_link.py`, `analysis/weak_link_qos2.py`,
+`analysis/weak_link_ci.py`). Does QoS 2's extra latency come from its extra radio round trip, and
+does that round trip grow on a weaker link? This backs Section VI.G.5 and Table 10 of the paper.
+- **Setup:** the Pi is static at three positions: about 2 m line of sight (about -42 dBm), through
+  walls (about -69 dBm), and further through walls (about -80 dBm, 7-14 Mbit/s).
+- **Run per position:** one `run_field.py` flight-mode run of 6 rounds x QoS 0/1/2 x 20 s, with the
+  QoS order rotated every round. The laptop captures packets on the wired and loopback interfaces,
+  with MQTT CONNECT segments filtered out so no credential is stored.
+- **Latency split:** each message's latency is split into three parts from the capture:
+  - Pi -> broker (Pi publish -> laptop NIC + broker turnaround);
+  - the PUBREC -> PUBREL radio round trip (QoS 2 only);
+  - broker -> logger.
+
+  A clock-free radio round trip (broker reply -> the Pi's TCP ACK) is also reported.
+- **CIs:** `weak_link_ci.py` gives 95% moving-block bootstrap intervals, with the same method as
+  `bootstrap_ci.py` (2 s blocks, plus 1 s and 5 s as a sensitivity check). They cover:
+  - QoS 2 vs QoS 0 and QoS 1, for p95 and share > 20 ms;
+  - the change from the first position in the round trip's median and p95;
+  - the change from the first position in the QoS 2 - QoS 1 p95 gap.
+
+```
+python code/run_weak_link.py --position p2m --distance-m 2 --notes "..."   # one run per position; --dry-run prints the plan
+python analysis/weak_link_qos2.py data/weak_link_p2m/r1 data/weak_link_wall1/r1 data/weak_link_far1/r1
+python analysis/weak_link_ci.py data/weak_link_p2m/r1 data/weak_link_wall1/r1 data/weak_link_far1/r1 --block-s 2,1,5
+```
+
+The first command needs the Pi and the lab broker (the MQTT password comes from a prompt or
+`MQTT_PASSWORD`). The raw runs and captures are not included. The analyses write to
+`<run>/weak_link/` and `data/weak_link_summary/`.
+
 ## Licence
 
 MIT (see `LICENSE`).
