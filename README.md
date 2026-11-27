@@ -130,6 +130,69 @@ the router, altitude above takeoff, RSSI, timing and latency are kept.
 Raw packet captures, Pi and laptop system journals, raw Wi-Fi and clock logs, publisher payload logs
 and Pixhawk logs are not included. They are available from the authors on request.
 
+## Additional checks
+
+**MQTT 5 quota test** (`tests/test_mqtt5_quota.py`, laptop only). Can the publisher detect the QoS 2
+messages that Mosquitto's default `max_inflight_messages 20` rejects?
+- **Setup:** the test starts its own Mosquitto on a free localhost port with the default limits. The
+  publisher sends 50 QoS 2 messages in one burst, with no client-side in-flight limit (like paho's
+  resend after a reconnect).
+- **Variants:** MQTT 3.1.1, MQTT 5, and MQTT 5 with the client's in-flight limit set to the
+  broker's Receive Maximum.
+- **Recorded per message:** `on_publish` reason code, `is_published()`, `wait_for_publish()` and
+  delivery to a subscriber. PUBREC/PUBCOMP reason codes come from a loopback capture and the broker
+  debug log.
+- **Needs:** Mosquitto 2.0.18, `dumpcap` with capture rights (e.g. group `wireshark`), and a Python
+  with the paho version to test.
+
+```
+python tests/test_mqtt5_quota.py --python /path/to/venv-with-paho-2.1/bin/python [--reps 3]
+```
+
+Raw outputs (captures, broker logs) go to `data/mqtt5_check/`, which is not tracked. The results are
+in `data_processed/mqtt5_check/` (`notes.md`, `summary.md`); 3 repeats each, identical:
+
+| Variant | Sent | PUBREC rc 0 / 0x97 | Publisher believed delivered | Actually delivered |
+|---|---|---|---|---|
+| MQTT 3.1.1 | 50 | 20 / 30 | 50 | 20 |
+| MQTT 5 | 50 | 35 / 15 | 50 | 35 |
+| MQTT 5, in-flight limit = Receive Maximum (20) | 50 | 50 / 0 | 50 | 50 |
+
+- **MQTT 5 puts 0x97 on the wire, but paho-mqtt 2.1.0 (and 2.2.0) ignores the PUBREC reason code.**
+  It then sends PUBREL anyway, Mosquitto answers with a success PUBCOMP, and the publisher reports
+  every rejected message as delivered. So switching to MQTT 5 alone does not make the loss detectable
+  with paho.
+- **Ways to avoid the loss:** honour the broker's Receive Maximum, or set `max_inflight_messages 0`
+  on the broker (as in `config/mosquitto-lab.conf`).
+- **MQTT 5 accepted 35, not 20.** After the 20th message Mosquitto 2.0.18 alternated between
+  rejecting and accepting; the cause is not established.
+
+**Bootstrap confidence intervals** (`analysis/bootstrap_ci.py`). 95% intervals for the latency
+statistics:
+- **Flights:** share > 20 ms, p50 and p95 per flight x QoS x RSSI band, as in `link_bands/`.
+- **Comparisons:** QoS 2 vs QoS 0/1, and weak vs strong band, per flight and pooled over the flights.
+- **Bench baseline:** `base_final` p95, p99 and share > 20 ms, with and without scan windows.
+
+Method:
+- **Bootstrap:** moving-block, circular within each contiguous stretch of a cell, because late
+  messages are clustered in time. Blocks of 2 s, plus 1 s and 5 s as a sensitivity check; 10,000
+  resamples; seed 20261126; percentile intervals.
+- **Bench:** a run-level bootstrap as well.
+- **Inputs:** it reads `data_processed/` (or `$UAV_MQTT_DATA`) and checks its point estimates
+  against the published tables.
+
+```
+python analysis/bootstrap_ci.py            # about 2.5 min; writes data_processed/ci/
+```
+
+Results are in `data_processed/ci/` (`summary.md` first):
+- **QoS 2 vs QoS 0/1:** pooled over the four flights, the QoS 2 share over 20 ms in the -65 to -75 dBm
+  band is higher than QoS 1's by 2.1 percentage points (95% CI 0.8-4.0) and QoS 0's by 2.4 (0.9-4.2).
+- **Band effect:** QoS 2 in that band is 2.5 points (1.4-4.3) above QoS 2 in the -55 to -65 band.
+- These intervals exclude 0 at all three block lengths. Several per-flight differences are
+  inconclusive or depend on the block length, and all cells with fewer than 100 messages or 10 blocks
+  are flagged as too small.
+
 ## Licence
 
 MIT (see `LICENSE`).
